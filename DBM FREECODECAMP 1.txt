@@ -1,0 +1,138 @@
+
+CREATE DATABASE universe;
+
+
+\c universe;
+
+
+CREATE TABLE galaxy (
+  galaxy_id SERIAL PRIMARY KEY,
+  name VARCHAR NOT NULL UNIQUE,
+  size NUMERIC NOT NULL,
+  type VARCHAR NOT NULL,
+  age INT NOT NULL,
+  is_active BOOLEAN NOT NULL
+);
+
+
+CREATE TABLE star (
+  star_id SERIAL PRIMARY KEY,
+  name VARCHAR NOT NULL UNIQUE,
+  temperature INT NOT NULL,
+  size NUMERIC NOT NULL,
+  type VARCHAR NOT NULL,
+  is_habitable BOOLEAN NOT NULL,
+  galaxy_id INT NOT NULL,
+  FOREIGN KEY (galaxy_id) REFERENCES galaxy(galaxy_id)
+);
+
+CREATE TABLE planet (
+  planet_id SERIAL PRIMARY KEY,
+  name VARCHAR NOT NULL UNIQUE,
+  size NUMERIC NOT NULL,
+  type VARCHAR NOT NULL,
+  is_habitable BOOLEAN NOT NULL,
+  star_id INT NOT NULL,
+  FOREIGN KEY (star_id) REFERENCES star(star_id)
+);
+
+CREATE TABLE moon (
+  moon_id SERIAL PRIMARY KEY,
+  name VARCHAR NOT NULL UNIQUE,
+  size NUMERIC NOT NULL,
+  type VARCHAR NOT NULL,
+  is_habitable BOOLEAN NOT NULL,
+  planet_id INT NOT NULL,
+  FOREIGN KEY (planet_id) REFERENCES planet(planet_id)
+);
+
+INSERT INTO galaxy (name, size, type, age, is_active) VALUES
+('Milky Way', 100, 'Spiral', 13.5, true),
+('Andromeda', 120, 'Spiral', 8, true),
+('Triangulum', 80, 'Spiral', 7, true),
+('Centaurus A', 80, 'Elliptical', 10, true),
+('M87', 60, 'Elliptical', 14, true),
+('Black Eye Galaxy', 50, 'Spiral', 12, true);
+
+
+INSERT INTO star (name, temperature, size, type, is_habitable, galaxy_id) VALUES
+('Sun', 5500, 1, 'G-type', false, 1),
+('Proxima Centauri', 3042, 0.12, 'M-type', false, 2),
+('Alpha Centauri A', 5771, 1.1, 'G-type', false, 2),
+('Alpha Centauri B', 5200, 0.9, 'K-type', false, 2),
+('Barnard', 3200, 0.2, 'M-type', false, 1),
+('Wolf 359', 2550, 0.09, 'M-type', false, 1),
+('Luyten 726-8 A', 3200, 0.2, 'M-type', false, 1),
+('Luyten 726-8 B', 3200, 0.2, 'M-type', false, 1),
+('Sirius A', 9940, 1.7, 'A-type', false, 1),
+('Sirius B', 25000, 0.003, 'DA-type', false, 1),
+('Lacaille 9352', 4300, 0.3, 'K-type', false, 1);
+
+INSERT INTO planet (name, size, type, is_habitable, star_id) VALUES
+('Mercury', 0.38, 'Terrestrial', false, 1),
+('Venus', 0.95, 'Terrestrial', false, 1),
+('Earth', 1, 'Terrestrial', true, 1),
+('Mars', 0.53, 'Terrestrial', false, 1),
+('Jupiter', 11.2, 'Gas Giant', false, 1),
+('Saturn', 9.58, 'Gas Giant', false, 1),
+('Uranus', 4, 'Ice Giant', false, 1),
+('Neptune', 3.88, 'Ice Giant', false, 1),
+('Proxima b', 1.17, 'Terrestrial', false, 2),
+('Alpha Centauri Bb', 0.04, 'Terrestrial', false, 3),
+('Alpha Centauri Ab', 1.13, 'Terrestrial', false, 3),
+('Barnard b', 3.2, 'Terrestrial', false, 5),
+('Wolf 359 b', 0.01, 'Terrestrial', false, 6),
+('Luyten 726-8 Ab', 0.15, 'Terrestrial', false, 7),
+('Luyten 726-8 Bb', 0.17, 'Terrestrial', false, 8),
+('Sirius Ab', 2.06, 'Terrestrial', false, 9),
+('Sirius Bb', 0.003, 'Terrestrial', false, 10);
+
+
+INSERT INTO moon (name, size, type, is_habitable, planet_id) VALUES
+('Luna', 0.27, 'Terrestrial', false, 3),
+('Phobos', 0.07, 'Terrestrial', false, 4),
+('Deimos', 0.03, 'Terrestrial', false, 4),
+('Io', 0.18, 'Terrestrial', false, 5),
+('Europa', 0.15, 'Terrestrial', false, 5),
+('Ganymede', 0.41, 'Terrestrial', false, 5),
+('Callisto', 0.38, 'Terrestrial', false, 5),
+('Mimas', 0.02, 'Terrestrial', false, 6),
+('Enceladus', 0.03, 'Terrestrial', false, 6),
+('Tethys', 0.04, 'Terrestrial', false, 6),
+('Dione', 0.03, 'Terrestrial', false, 6),
+('Rhea', 0.04, 'Terrestrial', false, 6),
+('Titan', 0.14, 'Terrestrial', false, 6),
+('Hyperion', 0.03, 'Terrestrial', false, 6),
+('Iapetus', 0.03, 'Terrestrial', false, 6),
+('Umbriel', 0.03, 'Terrestrial', false, 7),
+('Ariel', 0.03, 'Terrestrial', false, 7),
+('Titania', 0.03, 'Terrestrial', false, 7),
+('Miranda', 0.03, 'Terrestrial', false, 7),
+('Triton', 0.14, 'Terrestrial', false, 8),
+('Charon', 0.03, 'Terrestrial', false, 9),
+('Nix', 0.02, 'Terrestrial', false, 10),
+('Hydra', 0.02, 'Terrestrial', false, 10),
+('Styx', 0.02, 'Terrestrial', false, 10),
+('Nereid', 0.03, 'Terrestrial', false, 11),
+('Chariklo', 0.03, 'Terrestrial', false, 11),
+('Pholus', 0.03, 'Terrestrial', false, 11),
+('Chiron', 0.03, 'Terrestrial', false, 11),
+('Ixion', 0.03, 'Terrestrial', false, 11),
+('Orcus', 0.03, 'Terrestrial', false, 11),
+('Quaoar', 0.03, 'Terrestrial', false, 11),
+('Varuna', 0.03, 'Terrestrial', false, 11),
+('Makemake', 0.03, 'Terrestrial', false, 11);
+
+CREATE TABLE new_table ( new_id SERIAL PRIMARY KEY, 
+name VARCHAR NOT NULL UNIQUE, 
+size NUMERIC NOT NULL, 
+type VARCHAR NOT NULL, 
+is_habitable BOOLEAN NOT NULL, 
+plant_id INT NOT NULL,
+text TEXT NOT NULL
+ );
+
+INSERT INTO new ( name, size, type, is_habitable, plant_id, text) VALUES
+('z', 1, 'g', false, 1, 'A');
+('A', 1, 'g', false, 1, 'A');
+('B', 1, 'g', false, 1, 'A');
